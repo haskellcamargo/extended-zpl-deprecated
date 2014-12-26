@@ -32,7 +32,16 @@
 
     public function decl() {
       $this->match(Tokenizer :: T_DECLARE);
+      $this->declarations();
+      $this->match(Tokenizer :: T_PERIOD);
+    }
+
+    public function declarations() {
       $this->declaration();
+      while ($this->lookahead->key === Tokenizer :: T_COMMA) {
+        $this->match(Tokenizer :: T_COMMA);
+        $this->declaration();
+      }
     }
 
     public function declaration() {

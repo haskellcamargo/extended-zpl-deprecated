@@ -47,6 +47,9 @@
   require_once 'Parser.php';
 
   class TokenReader extends Parser {
+    private $acc
+          , $ax;  # Internal registers.
+
     public function __construct(Lexer $source) {
       parent :: __construct($source);
     }
@@ -76,13 +79,20 @@
     }
 
     public function call() {
-      if ($this->lookahead->key === Tokenizer :: T_SEPARATOR)
+      if ($this->lookahead->key === Tokenizer :: T_SEPARATOR) {
+        $this->acc = "field-separator";
+        $this->ax  = "<$>"; # As much as it takes no args.
         $this->match(Tokenizer :: T_SEPARATOR);
+        (new Call($this->acc, $this->ax));
+      }
       else {
+        $this->acc = $this->lookahead->value; # Replaces function signature.
+        $this->ax  = Null; # Empties $ax register.
         $this->match(Tokenizer :: T_CALL);
         $this->match(Tokenizer :: T_LBRACK);
         $this->arguments();
         $this->match(Tokenizer :: T_RBRACK);
+        (new Call($this->acc, $this->ax));
       }
     }
 
@@ -97,36 +107,43 @@
 
       args:
       if ($this->lookahead->key === Tokenizer :: T_STRING) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_STRING);
         goto parseMoreArgs;
       }
   
       else if ($this->lookahead->key === Tokenizer :: T_INT) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_INT);
         goto parseMoreArgs;
       }
 
       else if ($this->lookahead->key === Tokenizer :: T_TRUE) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_TRUE);
         goto parseMoreArgs;
       }
 
       else if ($this->lookahead->key === Tokenizer :: T_FALSE) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_FALSE);
         goto parseMoreArgs;
       }
 
       else if ($this->lookahead->key === Tokenizer :: T_NIL) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_NIL);
         goto parseMoreArgs;
       }
 
       else if ($this->lookahead->key === Tokenizer :: T_IDENTIFIER) {
+        $this->ax .= $this->lookahead->value . "<$>";
         $this->match(Tokenizer :: T_IDENTIFIER);
         goto parseMoreArgs;
       }
 
       else if ($this->lookahead->key === Tokenizer :: T_DEFVAR) {
+        $this->ax .= $this->lookahead->value . "<\$variable><$>";
         $this->match(Tokenizer :: T_DEFVAR);
         goto parseMoreArgs;
       }

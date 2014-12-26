@@ -4,7 +4,8 @@ declare
 
 variable
   $hello <- "Hello World!"
-, $font  <- False.
+, $font  <- False
+, $name  <- "Marcelo Camargo".
 
 do
   :field-origin [20, 10]

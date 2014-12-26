@@ -64,5 +64,10 @@
       foreach (IntermediateCodeGenerator :: $variables as $var)
         echo "{$var->key} = {$var->value}\n";
     }
+
+    public function listCalls() {
+      foreach (IntermediateCodeGenerator :: $calls as $call)
+        var_dump($call);
+    }
   }
   

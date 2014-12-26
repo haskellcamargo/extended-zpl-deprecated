@@ -28,4 +28,4 @@
   $parser = new TokenReader($lexer);
   $parser->stmt();
 
-  $parser->listVariables();
+  $parser->listCalls();

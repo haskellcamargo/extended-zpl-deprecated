@@ -20,12 +20,13 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  require_once 'Tokenizer.php';
-  require_once 'Token.php';
-  require_once 'TokenReader.php';
+  class Variable {
+    public $key
+         , $value;
 
-  $lexer  = new Tokenizer(file_get_contents("Main.zpl"));
-  $parser = new TokenReader($lexer);
-  $parser->stmt();
-
-  $parser->listVariables();
+    public function __construct($key, $value) {
+      $this->key   = $key;
+      $this->value = $value;
+      IntermediateCodeGenerator :: bindVariable($this);
+    }
+  }

@@ -21,9 +21,23 @@
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
   class IntermediateCodeGenerator {
-    static $declarations = [];
+    static $declarations = []
+         , $variables    = []
+         , $calls        = [];
 
     public static function bindDeclaration(Declaration $decl) {
       array_push(self :: $declarations, $decl);
+    }
+
+    public static function bindVariable(Variable $var) {
+      foreach (self :: $variables as $computed) {
+        if ($computed->key === $var->key)
+          throw new Exception("Variable '{$var->key}' is already defined. Variables are imutable.");
+      }
+      array_push(self :: $variables, $var);  
+    }
+
+    public function bindCall(Call $call) {
+      
     }
   }

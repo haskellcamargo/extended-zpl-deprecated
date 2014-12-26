@@ -22,6 +22,8 @@
 
   require_once 'IntermediateCodeGenerator.php';
   require_once 'Declaration.php';
+  require_once 'Variable.php';
+  require_once 'Call.php';
 
   abstract class Parser {
     public $source, $lookahead;
@@ -56,6 +58,11 @@
     public function listDeclarations() {
       foreach (IntermediateCodeGenerator :: $declarations as $decl)
         echo "{$decl->key} = {$decl->value}\n";
+    }
+
+    public function listVariables() {
+      foreach (IntermediateCodeGenerator :: $variables as $var)
+        echo "{$var->key} = {$var->value}\n";
     }
   }
   

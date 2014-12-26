@@ -50,3 +50,4 @@
       $this->lookahead = $this->source->nextToken();
     }
   }
+  

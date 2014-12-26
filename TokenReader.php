@@ -20,28 +20,13 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  final class StateChecker {
-    function startsIdentifier() {
-      return preg_match("/[a-zA-Z_]/", $this->char);
+  require_once 'Parser.php';
+  class TokenReader extends Parser {
+    public function __construct(Lexer $source) {
+      parent :: __construct($source);
     }
 
-    function holdsCall() {
-      if ($this->char != Tokenizer :: EOF)
-        return preg_match("/[a-zA-Z_\d-]/", $this->char);
-    }
-
-    function holdsIdentifier() {
-      if ($this->char != Tokenizer :: EOF)
-        return preg_match("/[a-zA-Z_\d]/", $this->char);
-    }
-
-    function holdsString() {
-      if ($this->char != Tokenizer :: EOF)
-        return $this->char != '"';
-    }
-
-    function holdsInt() {
-      if ($this->char != Tokenizer :: EOF)
-        return ctype_digit($this->char);
+    public function stmt() {
+      
     }
   }

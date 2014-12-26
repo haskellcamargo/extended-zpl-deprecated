@@ -20,28 +20,32 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  final class StateChecker {
-    function startsIdentifier() {
-      return preg_match("/[a-zA-Z_]/", $this->char);
+  abstract class Parser {
+    public $source, $lookahead;
+
+    public function __construct(Tokenizer $source) {
+      $this->source = $source;
+      $this->consume();
     }
 
-    function holdsCall() {
-      if ($this->char != Tokenizer :: EOF)
-        return preg_match("/[a-zA-Z_\d-]/", $this->char);
+    public function match() {
+      $args = func_get_args();
+      foreach ($args as $x)
+        if ($this->lookahead->key == $x) {
+          $this->consume();
+          return;
+        }
+
+      $expecting = "";
+      foreach ($args as $x)
+        $expecting .= $this->source->tokenName($x) . " or ";
+
+      throw new Exception("Expecting token " .
+        substr($expecting, 0, strlen($expecting) - 4) . ". Instead got " .
+        $this->source->tokenName($this->lookahead->key));
     }
 
-    function holdsIdentifier() {
-      if ($this->char != Tokenizer :: EOF)
-        return preg_match("/[a-zA-Z_\d]/", $this->char);
-    }
-
-    function holdsString() {
-      if ($this->char != Tokenizer :: EOF)
-        return $this->char != '"';
-    }
-
-    function holdsInt() {
-      if ($this->char != Tokenizer :: EOF)
-        return ctype_digit($this->char);
+    public function consume() {
+      $this->lookahead = $this->source->nextToken();
     }
   }

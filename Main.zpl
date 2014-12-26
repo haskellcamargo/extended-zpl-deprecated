@@ -3,16 +3,8 @@ declare
   @date   {:2014/12/25:}.
 
 variable
-  $string  <- "Hello World!",
-  $integer <- 1234567890,
-  $boolean <- True,
-  $falseV  <- False,
-  $thatNil <- Nil,
   $age     <- 18,
-  $year    <- 2015,
-  $ageCopy <- $age,
-  $compare <- $boolean /= $falseV,
-  $sum     <- 2 + 3 * 4.
+  $name    <- "Marcelo".
 
 begin
   :field-origin [20, 10]

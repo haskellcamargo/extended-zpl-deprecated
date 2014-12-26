@@ -104,28 +104,28 @@
             return TokenDefinition :: T_COMMA();
           case ".":
             return TokenDefinition :: T_PERIOD();
-          case "+":
-            return TokenDefinition :: T_PLUS();
-          case "-":
-            return TokenDefinition :: T_MINUS();
-          case "/":
+          #case "+":
+          #  return TokenDefinition :: T_PLUS();
+          #case "-":
+          #  return TokenDefinition :: T_MINUS();
+          #case "/":
             return AmbiguitySolver :: SLASH();
-          case "*":
-            return TokenDefinition :: T_TIMES();
-          case "^":
-            return TokenDefinition :: T_POW();
-          case "=":
-            return TokenDefinition :: T_EQUAL();
+          #case "*":
+          #  return TokenDefinition :: T_TIMES();
+          #case "^":
+          #  return TokenDefinition :: T_POW();
+          #case "=":
+          #  return TokenDefinition :: T_EQUAL();
           case "[":
             return TokenDefinition :: T_LBRACK();
           case "]":
             return TokenDefinition :: T_RBRACK();
           case ":":
             return TokenDefinition :: T_CALL();
-          case "(":
-            return TokenDefinition :: T_LPAREN();
-          case ")":
-            return TokenDefinition :: T_RPAREN();
+          #case "(":
+          #  return TokenDefinition :: T_LPAREN();
+          #case ")":
+          #  return TokenDefinition :: T_RPAREN();
           default:
             if ($this->char != self :: EOF) {
               if (preg_match("/\d/", $this->char))

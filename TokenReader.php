@@ -20,6 +20,29 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+  /**
+   * TODO:
+   * CREATE PARSING FOR EXPRESSIONS BY FOLLOWING THE GRAMMAR:
+   * HOLY SHIT! I ALWAYS FALL IN AN INFINITE RECURSION WHEN I
+   * TRY TO PARSE AN ARITHMETIC EXPRESSION!
+   * WHAT THE HELL IS HAPPENING WITH ME TODAY!?
+   *
+   * expr   -> expr + term
+   *         | expr - term
+   *         | term
+   * term   -> term * factor
+   *         | term / factor
+   *         | factor
+   * factor -> lit
+   *         | varDef
+   *         | comparison
+   *         | ( expr )
+   * lit    -> T_INT
+   *         | T_STRING
+   *         | T_TRUE
+   *         | T_FALSE
+   */
+
   require_once 'Parser.php';
   class TokenReader extends Parser {
     public function __construct(Lexer $source) {
@@ -28,12 +51,12 @@
 
     public function stmt() {
       if ($this->lookahead->key === Tokenizer :: T_DECLARE)
-        $this->decl();
+        $this->optDeclare();
       else if ($this->lookahead->key === Tokenizer :: T_VARIABLE)
-        $this->variable();
+        $this->optVariable();
     }
 
-    public function decl() {
+    public function optDeclare() {
       $this->match(Tokenizer :: T_DECLARE);
       $this->declarations();
       $this->match(Tokenizer :: T_PERIOD);
@@ -53,7 +76,7 @@
       $this->match(Tokenizer :: T_DECLSTRING);
     }
 
-    public function variable() {
+    public function optVariable() {
       $this->match(Tokenizer :: T_VARIABLE);
       $this->varDefs();
       $this->match(Tokenizer :: T_PERIOD);
@@ -75,36 +98,7 @@
     }
 
     public function expr() {
-      $this->literal();      # |
-      $this->varReference(); # |
-      $this->comparison();   # |
-      $this->arithmetic();   # |
-    }
-
-    public function arithmetic() {
-      if ($this->lookahead->key === Tokenizer :: T_PLUS) {
-        $this->match(Tokenizer :: T_PLUS);
-        $this->term();
-      }
-      else if ($this->lookahead->key === Tokenizer :: T_MINUS) {
-        $this->match(Tokenizer :: T_MINUS);
-        $this->term();
-      }
-    }
-
-    public function term() {
-      if ($this->lookahead->key === Tokenizer :: T_TIMES) {
-        $this->match(Tokenizer :: T_TIMES);
-        $this->factor();
-      }
-      else if ($this->lookahead->key === Tokenizer :: T_DIVISION) {
-        $this->match(Tokenizer :: T_DIVISION);
-        $this->factor();
-      }
-    }
-
-    public function factor() {
-      $this->expr();
+      $this->optLiteral();
     }
 
     public function comparison() {
@@ -123,25 +117,16 @@
         $this->match(Tokenizer :: T_DEFVAR);
     }
 
-    public function literal() {
-      $this->boolean(); # |
-      $this->nil();     # |
-
+    public function optLiteral() {
       if ($this->lookahead->key === Tokenizer :: T_STRING)
         $this->match(Tokenizer :: T_STRING);
       else if ($this->lookahead->key === Tokenizer :: T_INT)
         $this->match(Tokenizer :: T_INT);
-    }
-
-    public function boolean() {
-      if ($this->lookahead->key === Tokenizer :: T_TRUE)
+      else if ($this->lookahead->key === Tokenizer :: T_TRUE)
         $this->match(Tokenizer :: T_TRUE);
       else if ($this->lookahead->key === Tokenizer :: T_FALSE)
         $this->match(Tokenizer :: T_FALSE);
-    }
-
-    public function nil() {
-      if ($this->lookahead->key === Tokenizer :: T_NIL)
+      else if ($this->lookahead->key === Tokenizer :: T_NIL)
         $this->match(Tokenizer :: T_NIL);
     }
   }

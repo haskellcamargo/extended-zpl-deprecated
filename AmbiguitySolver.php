@@ -27,6 +27,6 @@
         $this->consume();
         return new Token(Tokenizer :: T_DIFF, "/=");
       }
-      return new Token(Tokenizer :: T_DIVISION, "/");
+    # return new Token(Tokenizer :: T_DIVISION, "/");
     }
   }

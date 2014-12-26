@@ -45,6 +45,7 @@
    */
 
   require_once 'Parser.php';
+
   class TokenReader extends Parser {
     public function __construct(Lexer $source) {
       parent :: __construct($source);
@@ -55,14 +56,15 @@
         $this->optDeclare();
       else if ($this->lookahead->key === Tokenizer :: T_VARIABLE)
         $this->optVariable();
-      else if ($this->lookahead->key === Tokenizer :: T_BEGIN)
+      else if ($this->lookahead->key === Tokenizer :: T_DO)
         $this->optDo();
     }
 
     public function optDo() {
-      $this->match(Tokenizer :: T_BEGIN);
+      $this->match(Tokenizer :: T_DO);
       $this->calls();
-      $this->match(Tokenizer :: T_END);
+      $this->match(Tokenizer :: T_PERIOD);
+      $this->match(Tokenizer :: EOF_TYPE);
     }
 
     public function calls() {
@@ -74,7 +76,72 @@
     }
 
     public function call() {
+      if ($this->lookahead->key === Tokenizer :: T_SEPARATOR)
+        $this->match(Tokenizer :: T_SEPARATOR);
+      else {
+        $this->match(Tokenizer :: T_CALL);
+        $this->match(Tokenizer :: T_LBRACK);
+        $this->arguments();
+        $this->match(Tokenizer :: T_RBRACK);
+      }
+    }
 
+    public function arguments() {
+      if ($this->lookahead->key === Tokenizer :: T_STRING) {
+        $this->match(Tokenizer :: T_STRING);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+  
+      else if ($this->lookahead->key === Tokenizer :: T_INT) {
+        $this->match(Tokenizer :: T_INT);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+
+      else if ($this->lookahead->key === Tokenizer :: T_TRUE) {
+        $this->match(Tokenizer :: T_TRUE);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+
+      else if ($this->lookahead->key === Tokenizer :: T_FALSE) {
+        $this->match(Tokenizer :: T_FALSE);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+
+      else if ($this->lookahead->key === Tokenizer :: T_NIL) {
+        $this->match(Tokenizer :: T_NIL);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+
+      else if ($this->lookahead->key === Tokenizer :: T_IDENTIFIER) {
+        $this->match(Tokenizer :: T_IDENTIFIER);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
+
+      else if ($this->lookahead->key === Tokenizer :: T_DEFVAR) {
+        $this->match(Tokenizer :: T_DEFVAR);
+        if ($this->lookahead->key === Tokenizer :: T_COMMA) {
+          $this->match(Tokenizer :: T_COMMA);
+          $this->arguments();
+        }
+      }
     }
 
     public function optDeclare() {
@@ -93,8 +160,9 @@
     }
 
     public function declaration() {
-      $this->match(Tokenizer :: T_DECLARAT);
-      $this->match(Tokenizer :: T_DECLSTRING);
+      $key   = $this->lookahead->value; $this->match(Tokenizer :: T_DECLARAT);
+      $value = $this->lookahead->value; $this->match(Tokenizer :: T_DECLSTRING);
+      (new Declaration($key, $value));
     }
 
     public function optVariable() {
@@ -151,6 +219,5 @@
         $this->match(Tokenizer :: T_NIL);
       else
         throw new Exception("Blank isn't a literal.");
-        
     }
   }

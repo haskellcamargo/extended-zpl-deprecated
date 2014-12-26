@@ -20,6 +20,9 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+  require_once 'IntermediateCodeGenerator.php';
+  require_once 'Declaration.php';
+
   abstract class Parser {
     public $source, $lookahead;
 
@@ -48,6 +51,11 @@
 
     public function consume() {
       $this->lookahead = $this->source->nextToken();
+    }
+
+    public function listDeclarations() {
+      foreach (IntermediateCodeGenerator :: $declarations as $decl)
+        echo "{$decl->key} = {$decl->value}\n";
     }
   }
   

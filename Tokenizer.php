@@ -62,6 +62,8 @@
     const T_CALL       = 32;
     const T_LPAREN     = 33;
     const T_RPAREN     = 34;
+    const T_DO         = 35;
+    const T_SEPARATOR  = 36;
 
     static $tokenNames = [
         'n/a', '[EOF]', 'T_NEWLINE', 'T_COMMENT', 'T_STRING', 'T_IDENTIFIER'
@@ -69,7 +71,8 @@
     , 'T_PERIOD', 'T_DECLARAT', 'T_DECLSTRING', 'T_DEFVAR', 'T_ASSIGN'
     , 'T_TRUE', 'T_FALSE', 'T_AMP', 'T_INT', 'T_NIL', 'T_DECLARE', 'T_COMMA'
     , 'T_VARIABLE', 'T_PLUS', 'T_MINUS', 'T_DIVISION', 'T_TIMES', 'T_POW'
-    , 'T_EQUAL', 'T_DIFF', 'T_CALL', 'T_LPAREN', 'T_RPAREN'
+    , 'T_EQUAL', 'T_DIFF', 'T_CALL', 'T_LPAREN', 'T_RPAREN', 'T_DO'
+    , 'T_SEPARATOR'
     ];
 
     public function __construct($input) {
@@ -122,6 +125,8 @@
             return TokenDefinition :: T_RBRACK();
           case ":":
             return TokenDefinition :: T_CALL();
+          case "/":
+            return TokenDefinition :: T_SEPARATOR();
           #case "(":
           #  return TokenDefinition :: T_LPAREN();
           #case ")":

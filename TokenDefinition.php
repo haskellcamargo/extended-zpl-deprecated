@@ -140,10 +140,8 @@
           return new Token(Tokenizer :: T_DECLARE, $buffer);
         case "variable":
           return new Token(Tokenizer :: T_VARIABLE, $buffer);
-        case "begin":
-          return new Token(Tokenizer :: T_BEGIN, $buffer);
-        case "end":
-          return new Token(Tokenizer :: T_END, $buffer);
+        case "do":
+          return new Token(Tokenizer :: T_DO, $buffer);
         default:
           return new Token(Tokenizer :: T_IDENTIFIER, $buffer);
       endswitch;
@@ -206,6 +204,11 @@
     function T_RPAREN() {
       $this->consume();
       return new Token(Tokenizer :: T_RPAREN, ")");
+    }
+
+    function T_SEPARATOR() {
+      $this->consume();
+      return new Token(Tokenizer :: T_SEPARATOR, "/");
     }
 
     function T_STRING() {

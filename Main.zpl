@@ -8,5 +8,5 @@ variable
 
 do
   :field-origin [20, 10]
-, :font-prop    [D, False, 90, 50]
-, :field-data   [$say].
+, :font-config  [D, $font, 90, 50]
+, :field-data   [$hello], /.

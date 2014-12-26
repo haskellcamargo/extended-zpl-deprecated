@@ -10,8 +10,8 @@ variable
   $thatNil <- Nil,
   $age     <- 18,
   $year    <- 2015,
-  $compare <- $boolean /= $falseV,
-  $birth   <- ($age - $year + 12) * 7 / 2.
+  $ageCopy <- $age,
+  $compare <- $boolean /= $falseV.
 
 begin
   :field-origin [20, 10]

@@ -40,6 +40,7 @@
       foreach ($args as $x)
         $expecting .= $this->source->tokenName($x) . " or ";
 
+      var_dump($this);
       throw new Exception("Expecting token " .
         substr($expecting, 0, strlen($expecting) - 4) . ". Instead got " .
         $this->source->tokenName($this->lookahead->key));

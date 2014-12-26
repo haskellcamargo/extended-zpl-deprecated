@@ -27,13 +27,17 @@
     }
 
     public function stmt() {
-      $this->decl();
+      if ($this->lookahead->key === Tokenizer :: T_DECLARE)
+        $this->decl();
+      else if ($this->lookahead->key === Tokenizer :: T_VARIABLE)
+        $this->variable();
     }
 
     public function decl() {
       $this->match(Tokenizer :: T_DECLARE);
       $this->declarations();
       $this->match(Tokenizer :: T_PERIOD);
+      $this->stmt();
     }
 
     public function declarations() {
@@ -47,5 +51,70 @@
     public function declaration() {
       $this->match(Tokenizer :: T_DECLARAT);
       $this->match(Tokenizer :: T_DECLSTRING);
+    }
+
+    public function variable() {
+      $this->match(Tokenizer :: T_VARIABLE);
+      $this->varDefs();
+      $this->match(Tokenizer :: T_PERIOD);
+      $this->stmt();
+    }
+
+    public function varDefs() {
+      $this->varDef();
+      while ($this->lookahead->key === Tokenizer :: T_COMMA) {
+        $this->match(Tokenizer :: T_COMMA);
+        $this->varDef();
+      }
+    }
+
+    public function varDef() {
+      $this->match(Tokenizer :: T_DEFVAR);
+      $this->match(Tokenizer :: T_ASSIGN);
+      $this->expr();
+    }
+
+    public function expr() {
+      $this->literal();      # |
+      $this->varReference(); # |
+      $this->comparison();   # |
+    }
+
+    public function comparison() {
+      if ($this->lookahead->key === Tokenizer :: T_EQUAL) {
+        $this->match(Tokenizer :: T_EQUAL);
+        $this->expr();
+      }
+      else if ($this->lookahead->key === Tokenizer :: T_DIFF) {
+        $this->match(Tokenizer :: T_DIFF);
+        $this->expr();
+      }
+    }
+
+    public function varReference() {
+      if ($this->lookahead->key === Tokenizer :: T_DEFVAR)
+        $this->match(Tokenizer :: T_DEFVAR);
+    }
+
+    public function literal() {
+      $this->boolean(); # |
+      $this->nil();     # |
+
+      if ($this->lookahead->key === Tokenizer :: T_STRING)
+        $this->match(Tokenizer :: T_STRING);
+      else if ($this->lookahead->key === Tokenizer :: T_INT)
+        $this->match(Tokenizer :: T_INT);
+    }
+
+    public function boolean() {
+      if ($this->lookahead->key === Tokenizer :: T_TRUE)
+        $this->match(Tokenizer :: T_TRUE);
+      else if ($this->lookahead->key === Tokenizer :: T_FALSE)
+        $this->match(Tokenizer :: T_FALSE);
+    }
+
+    public function nil() {
+      if ($this->lookahead->key === Tokenizer :: T_NIL)
+        $this->match(Tokenizer :: T_NIL);
     }
   }

@@ -20,13 +20,13 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  class Variable {
-    public $key
-         , $value;
+  class CodeGenerator {
+    private $nonOptimizedCode = "";
 
-    public function __construct($key, $value) {
-      $this->key   = $key;
-      $this->value = $value;
-      Linker :: bindVariable($this);
+    public function __construct($declarations, $callings) {
+      foreach ($declarations as $decl)
+        $nonOptimizedCode .= "^FX {$decl->key}: {$decl->value}\n";
+
+      var_dump($this->nonOptimizedCode);
     }
   }

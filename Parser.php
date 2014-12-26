@@ -20,7 +20,7 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  require_once 'IntermediateCodeGenerator.php';
+  require_once 'Linker.php';
   require_once 'Declaration.php';
   require_once 'Variable.php';
   require_once 'Call.php';
@@ -56,17 +56,17 @@
     }
 
     public function listDeclarations() {
-      foreach (IntermediateCodeGenerator :: $declarations as $decl)
+      foreach (Linker :: $declarations as $decl)
         echo "{$decl->key} = {$decl->value}\n";
     }
 
     public function listVariables() {
-      foreach (IntermediateCodeGenerator :: $variables as $var)
+      foreach (Linker :: $variables as $var)
         echo "{$var->key} = {$var->value}\n";
     }
 
     public function listCalls() {
-      foreach (IntermediateCodeGenerator :: $calls as $call)
+      foreach (Linker :: $calls as $call)
         var_dump($call);
     }
   }

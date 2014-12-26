@@ -68,6 +68,8 @@
       $this->calls();
       $this->match(Tokenizer :: T_PERIOD);
       $this->match(Tokenizer :: EOF_TYPE);
+      (new CodeGenerator(Linker :: $declarations
+                       , Linker :: $calls));
     }
 
     public function calls() {
@@ -224,6 +226,6 @@
       else if ($this->lookahead->key === Tokenizer :: T_NIL)
         $this->match(Tokenizer :: T_NIL);
       else
-        throw new Exception("Blank isn't a literal.");
+        throw new Exception("Expressions accept just scalar values.");
     }
   }

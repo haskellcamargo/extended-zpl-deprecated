@@ -27,5 +27,3 @@
   $lexer  = new Tokenizer(file_get_contents("Main.zpl"));
   $parser = new TokenReader($lexer);
   $parser->stmt();
-
-  $parser->listCalls();

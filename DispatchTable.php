@@ -20,13 +20,8 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  class Variable {
-    public $key
-         , $value;
-
-    public function __construct($key, $value) {
-      $this->key   = $key;
-      $this->value = $value;
-      Linker :: bindVariable($this);
-    }
+  class DispatchTable {
+    static $parse = [
+      "field-separator" =>  "^FS"
+    ];
   }

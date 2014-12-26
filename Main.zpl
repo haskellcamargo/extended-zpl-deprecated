@@ -1,13 +1,12 @@
 declare
-  @author {:Marcelo Camargo:},
-  @date   {:2014/12/25:}.
+  @package {:HelloWorld:}
+, @date    {:2014/12/26:}.
 
 variable
-  $age     <- 18,
-  $name    <- "Marcelo".
+  $hello <- "Hello World!"
+, $font  <- False.
 
-begin
+do
   :field-origin [20, 10]
-  :font-prop    [D, False, 90, 50]
-  :field-data   [$say].
-end.
+, :font-prop    [D, False, 90, 50]
+, :field-data   [$say].

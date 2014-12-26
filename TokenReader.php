@@ -41,6 +41,7 @@
    *         | T_STRING
    *         | T_TRUE
    *         | T_FALSE
+   *         | T_NIL
    */
 
   require_once 'Parser.php';
@@ -54,6 +55,26 @@
         $this->optDeclare();
       else if ($this->lookahead->key === Tokenizer :: T_VARIABLE)
         $this->optVariable();
+      else if ($this->lookahead->key === Tokenizer :: T_BEGIN)
+        $this->optDo();
+    }
+
+    public function optDo() {
+      $this->match(Tokenizer :: T_BEGIN);
+      $this->calls();
+      $this->match(Tokenizer :: T_END);
+    }
+
+    public function calls() {
+      $this->call();
+      while ($this->lookahead->key === Tokenizer :: T_COMMA) {
+        $this->match(Tokenizer :: T_COMMA);
+        $this->call();
+      }
+    }
+
+    public function call() {
+
     }
 
     public function optDeclare() {
@@ -98,7 +119,7 @@
     }
 
     public function expr() {
-      $this->optLiteral();
+      $this->oblLiteral();
     }
 
     public function comparison() {
@@ -117,7 +138,7 @@
         $this->match(Tokenizer :: T_DEFVAR);
     }
 
-    public function optLiteral() {
+    public function oblLiteral() {
       if ($this->lookahead->key === Tokenizer :: T_STRING)
         $this->match(Tokenizer :: T_STRING);
       else if ($this->lookahead->key === Tokenizer :: T_INT)
@@ -128,5 +149,8 @@
         $this->match(Tokenizer :: T_FALSE);
       else if ($this->lookahead->key === Tokenizer :: T_NIL)
         $this->match(Tokenizer :: T_NIL);
+      else
+        throw new Exception("Blank isn't a literal.");
+        
     }
   }

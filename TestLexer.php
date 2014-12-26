@@ -24,7 +24,7 @@
   require_once 'Tokenizer.php';
   require_once 'Token.php';
 
-  $lexer  = new Tokenizer(file_get_contents("Main.zpl"));
+  $lexer  = new Tokenizer(file_get_contents($argv[1]));
   $token  = $lexer->nextToken();
   while ($token->key != EOF) {
     echo $token . "\n";

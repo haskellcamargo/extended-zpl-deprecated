@@ -34,15 +34,12 @@
           $this->nonOptimizedCode .=
             DispatchTable :: $parse[$call[0]];
         if (sizeof($call[1]) > 0) {
-          // $this->nonOptimizedCode .=
-          //   implode(",", $call[1]);
-
 
           # A big workaround to parse ZPL patterns! PLEASE, REMEMBER TO CHANGE THIS SH*T AS SOON
           # AS POSSIBLE! # USE array_reduce to simulate foldl.
           $stack  = [];
           $buffer = "";
-          for ($i = 0; $i < sizeof($call[1]); $i++) {
+          for ($i = 0; $i < sizeof(array_filter($call[1])); $i++) {
             if (preg_match("/[DNY]/", $call[1][$i])) {
               if (!isset($call[1][$i + 1])) {
                 array_push($stack, $call[1][$i]);
@@ -62,15 +59,18 @@
               }
             } else {
               array_push($stack, $call[1][$i]);
-              $buffer = Null;
             }
-
-            var_dump($stack);
           }
         }
+
+        if (empty($call[1])) # Empties the stack if there are no params.
+          $stack = [];
+        $this->nonOptimizedCode .= implode(",", $stack);
         $this->nonOptimizedCode .= "\n";
       }
 
-      echo $this->nonOptimizedCode;
+      # Code has been successfully generated.
+      file_put_contents("output.zpl", $this->nonOptimizedCode);
+      echo "Successfully compiled.";
     }
   }

@@ -76,7 +76,6 @@
     ];
 
     public function __construct($input) {
-      if ($input != "")
         parent :: __construct($input);
     }
 

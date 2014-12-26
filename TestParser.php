@@ -24,6 +24,6 @@
   require_once 'Token.php';
   require_once 'TokenReader.php';
 
-  $lexer  = new Tokenizer(file_get_contents("Main.zpl"));
+  $lexer  = new Tokenizer(file_get_contents($argv[1]));
   $parser = new TokenReader($lexer);
   $parser->stmt();

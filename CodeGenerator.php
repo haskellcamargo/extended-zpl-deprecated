@@ -20,13 +20,57 @@
   # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+  require_once 'DispatchTable.php';
+
   class CodeGenerator {
     private $nonOptimizedCode = "";
 
     public function __construct($declarations, $callings) {
       foreach ($declarations as $decl)
-        $nonOptimizedCode .= "^FX {$decl->key}: {$decl->value}\n";
+        $this->nonOptimizedCode .= "^FX {$decl->key}: {$decl->value}\n";
 
-      var_dump($this->nonOptimizedCode);
+      foreach ($callings as $call) {
+        if (isset(DispatchTable :: $parse[$call[0]]))
+          $this->nonOptimizedCode .=
+            DispatchTable :: $parse[$call[0]];
+        if (sizeof($call[1]) > 0) {
+          // $this->nonOptimizedCode .=
+          //   implode(",", $call[1]);
+
+
+          # A big workaround to parse ZPL patterns! PLEASE, REMEMBER TO CHANGE THIS SH*T AS SOON
+          # AS POSSIBLE! # USE array_reduce to simulate foldl.
+          $stack  = [];
+          $buffer = "";
+          for ($i = 0; $i < sizeof($call[1]); $i++) {
+            if (preg_match("/[DNY]/", $call[1][$i])) {
+              if (!isset($call[1][$i + 1])) {
+                array_push($stack, $call[1][$i]);
+              }
+              else {
+                if (preg_match("/[DNY]/", $call[1][$i + 1])) {
+                  $buffer = $call[1][$i] . $call[1][$i + 1];
+                  $i++; $i++;
+
+                  for ($j = 0; $j < sizeof($call[1][$i]); $j++)
+                    if (preg_match("/\d/", $call[1][$i])) {
+                      $buffer .= $call[1][$i];
+                      $j++;
+                    }
+                  array_push($stack, $buffer);
+                }
+              }
+            } else {
+              array_push($stack, $call[1][$i]);
+              $buffer = Null;
+            }
+
+            var_dump($stack);
+          }
+        }
+        $this->nonOptimizedCode .= "\n";
+      }
+
+      echo $this->nonOptimizedCode;
     }
   }

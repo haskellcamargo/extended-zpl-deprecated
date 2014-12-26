@@ -1,13 +1,12 @@
 declare
-  @package {:HelloWorld:}
-, @date    {:2014/12/26:}.
+  @module  {:HelloWorld:}
+, @date    {:2014/12/26:}
+, @descr   {:Simple hello world program in Extended ZPL:}.
 
 variable
-  $hello <- "Hello World!"
-, $font  <- False
-, $test  <- True.
+  $hello <- "Hello World!".
 
 do
   :field-origin [20, 10]
-, :font-config  [D, $font, 90, 50]
+, :font-config  [D, N, 90, 50, N]
 , :field-data   [$hello], /.

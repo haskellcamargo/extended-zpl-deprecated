@@ -22,6 +22,9 @@
 
   class DispatchTable {
     static $parse = [
-      "field-separator" =>  "^FS"
+      "field-origin"    =>  "^FO"
+    , "field-separator" =>  "^FS"
+    , "field-data"      =>  "^FD"
+    , "font-config"     =>  "^A"
     ];
   }

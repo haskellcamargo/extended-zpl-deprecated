@@ -49,8 +49,11 @@
           # Search in variables virtual table.
           for ($j = 0, $varlen = sizeof(self :: $variables); $j < $varlen; $j++) {
             $var = self :: $variables[$j];
-            if ($var->key === substr($piece, 0, strlen($piece) - 11))
+            if ($var->key === ($v = substr($piece, 0, strlen($piece) - 11)))
               array_push($stack, self :: $variables[$j]->value);
+            else
+              throw new Exception("Undefined variable '{$v}'.");
+              
           }
         else array_push($stack, $piece);
       }

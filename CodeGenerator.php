@@ -33,6 +33,9 @@
         if (isset(DispatchTable :: $parse[$call[0]]))
           $this->nonOptimizedCode .=
             DispatchTable :: $parse[$call[0]];
+        else
+          throw new Exception("Call to undefined function '{$call[0]}'.");
+          
         if (sizeof($call[1]) > 0) {
 
           # A big workaround to parse ZPL patterns! PLEASE, REMEMBER TO CHANGE THIS SH*T AS SOON

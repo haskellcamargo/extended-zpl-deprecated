@@ -27,6 +27,16 @@
     }
 
     public function stmt() {
-      
+      $this->decl();
+    }
+
+    public function decl() {
+      $this->match(Tokenizer :: T_DECLARE);
+      $this->declaration();
+    }
+
+    public function declaration() {
+      $this->match(Tokenizer :: T_DECLARAT);
+      $this->match(Tokenizer :: T_DECLSTRING);
     }
   }

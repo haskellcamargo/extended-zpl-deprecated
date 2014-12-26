@@ -23,7 +23,7 @@ declstring = "{:", ?.*?, ":}" ;
 
 literal = boolean
         | integer
-        | string 
+        | string
         | "Nil";
 boolean = "True" | "False" ;
 integer = digit, { digit } ;

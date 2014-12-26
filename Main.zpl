@@ -4,7 +4,7 @@ declare
 , @descr    {:Simple hello world program in Extended ZPL:}.
 
 variable
-  $hello <- "Hello World!".
+  $hello <- "Hello World!". % Comments are Erlang-like.
 
 do
   :field-origin [20, 10]

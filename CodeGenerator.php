@@ -26,6 +26,8 @@
     private $nonOptimizedCode = "";
 
     public function __construct($declarations, $callings) {
+      $this->nonOptimizedCode .= "^XA\n";
+
       foreach ($declarations as $decl)
         $this->nonOptimizedCode .= "^FX {$decl->key}: {$decl->value}\n";
 
@@ -71,6 +73,8 @@
         $this->nonOptimizedCode .= implode(",", $stack);
         $this->nonOptimizedCode .= "\n";
       }
+
+      $this->nonOptimizedCode .= "^XZ\n";
 
       # Code has been successfully generated.
       file_put_contents("output.zpl", $this->nonOptimizedCode);

@@ -11,7 +11,8 @@ variable
   $age     <- 18,
   $year    <- 2015,
   $ageCopy <- $age,
-  $compare <- $boolean /= $falseV.
+  $compare <- $boolean /= $falseV,
+  $sum     <- 2 + 3 * 4.
 
 begin
   :field-origin [20, 10]

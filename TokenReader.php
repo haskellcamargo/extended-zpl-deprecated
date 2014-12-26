@@ -78,6 +78,33 @@
       $this->literal();      # |
       $this->varReference(); # |
       $this->comparison();   # |
+      $this->arithmetic();   # |
+    }
+
+    public function arithmetic() {
+      if ($this->lookahead->key === Tokenizer :: T_PLUS) {
+        $this->match(Tokenizer :: T_PLUS);
+        $this->term();
+      }
+      else if ($this->lookahead->key === Tokenizer :: T_MINUS) {
+        $this->match(Tokenizer :: T_MINUS);
+        $this->term();
+      }
+    }
+
+    public function term() {
+      if ($this->lookahead->key === Tokenizer :: T_TIMES) {
+        $this->match(Tokenizer :: T_TIMES);
+        $this->factor();
+      }
+      else if ($this->lookahead->key === Tokenizer :: T_DIVISION) {
+        $this->match(Tokenizer :: T_DIVISION);
+        $this->factor();
+      }
+    }
+
+    public function factor() {
+      $this->expr();
     }
 
     public function comparison() {

@@ -28,6 +28,9 @@ $configuration
 	->setErrorsFile();
 
 
+/*
+ * Test Lexer
+ */
 $lexer  = new Tokenizer(file_get_contents("zpl/Main.zpl"));
 $token  = $lexer->nextToken();
 
@@ -35,5 +38,13 @@ while ($token->key != EOF) {
 	var_dump($token->key);
 	$token = $lexer->nextToken();
 }
+
+/*
+ * Test parser
+ */
+
+$lexer  = new Tokenizer(file_get_contents($argv[1]));
+$parser = new TokenReader($lexer);
+$parser->stmt();
 
 ?>

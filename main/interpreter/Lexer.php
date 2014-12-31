@@ -1,6 +1,6 @@
 <?php
-
 namespace main\interpreter;
+
 abstract class Lexer
 {
     const EOF      = -1;

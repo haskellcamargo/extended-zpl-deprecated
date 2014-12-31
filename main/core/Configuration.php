@@ -3,16 +3,30 @@ namespace main\core;
 
 class Configuration
 {
-	const LANGUAGE_FIELD 	= 'language';
-	const ERRORS_FILE_FIELD = 'errors';
-	const ERRORS_FILE_DEFAULT = 'assets/ErrorsList.ini';
+	const LANGUAGE_FIELD 		= 'LANGUAGE';
+	const ERRORS_FILE_FIELD 	= 'ERRORS';
+	const ENVIRONMENT_FIELD 	= 'ENVIRONMENT';
+	const ZPLFILES_FIELD 		= 'ZPL_FILES';
+	const COMPILE_DIR_FIELD		= 'COMPILE_DIR';
+	const ERRORS_FILE_DEFAULT 	= 'assets/ErrorsList.ini';
+	
 	private $configuration;
+	
 	private static $language;
+	private static $environment;
+	private static $runnableMode;
+	private static $zplFiles;
+	private static $compileDir;
+
 	private static $errorsFile = [];
+	private static $commands = [];
 
 	public function __construct($configuration)
 	{
 		$this->configuration = $configuration;
+		$this->setEnvironment()
+			 ->setZPLFiles()
+			 ->setCompileDir();
 	}
 
 	private function loadField($field = NULL)
@@ -24,12 +38,30 @@ class Configuration
 		return $this->configuration[$field];
 	} 
 
-	public function setLanguage()
+	private function setEnvironment()
 	{
-		$language = $this->loadField(self::LANGUAGE_FIELD);
-		self::$language = $language;
+		self::$environment = $this->loadField(self::ENVIRONMENT_FIELD);
 		return $this;
 	}
+
+	private function setZPLFiles()
+	{
+		self::$zplFiles = $this->loadField(self::ZPLFILES_FIELD);
+		return $this;
+	}
+
+	private function setCompileDir()
+	{
+		self::$compileDir = $this->loadField(self::COMPILE_DIR_FIELD);
+		return $this;
+	}
+
+	public function setLanguage()
+	{
+		self::$language = $this->loadField(self::LANGUAGE_FIELD);
+		return $this;
+	}
+
 
 	public function setErrorsFile()
 	{
@@ -55,6 +87,11 @@ class Configuration
 		return $this;
 	}
 
+	public function setRunnableMode($mode)
+	{
+		self::$runnableMode = $mode;
+		return $this;
+	}
 
 	public static function getLanguage()
 	{
@@ -64,5 +101,25 @@ class Configuration
 	public static function getErrorsFile()
 	{
 		return self::$errorsFile;
+	}
+
+	public static function getEnvironment()
+	{
+		return self::$environment;
+	}
+
+	public static function getRunnableMode()
+	{
+		return self::$runnableMode;
+	}
+
+	public static function getZPLFiles()
+	{
+		return self::$zplFiles;
+	}
+
+	public static function getCompileDir()
+	{
+		return self::$compileDir;
 	}
 }

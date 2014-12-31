@@ -11,6 +11,8 @@ include_once('config/constant.php');
 
 use main\core\Configuration,
 	main\core\ZPLException,
+	main\core\Core,
+	main\core\InputAdapter,
 	main\interpreter\Tokenizer;
 
 if( !defined('CONFIG_FILE') || !file_exists(CONFIG_FILE) ) 
@@ -25,26 +27,36 @@ if( empty($configurationData) )
 $configuration = new Configuration($configurationData);
 $configuration
 	->setLanguage()
-	->setErrorsFile();
+	->setErrorsFile()
+	->setRunnableMode(PHP_SAPI);
 
+if(!isset($argv)) $argv = $_GET;
+
+$core = new Core( $configuration,
+					new InputAdapter(
+							Configuration::getRunnableMode(),
+							$argv
+));
+
+$core->run();
 
 /*
  * Test Lexer
  */
-$lexer  = new Tokenizer(file_get_contents("zpl/Main.zpl"));
-$token  = $lexer->nextToken();
+// $lexer  = new Tokenizer(file_get_contents("zpl/Main.zpl"));
+// $token  = $lexer->nextToken();
 
-while ($token->key != EOF) {
-	var_dump($token->key);
-	$token = $lexer->nextToken();
-}
+// while ($token->key != EOF) {
+// 	var_dump($token->key);
+// 	$token = $lexer->nextToken();
+// }
 
 /*
  * Test parser
  */
 
-$lexer  = new Tokenizer(file_get_contents($argv[1]));
-$parser = new TokenReader($lexer);
-$parser->stmt();
+// $lexer  = new Tokenizer(file_get_contents($argv[1]));
+// $parser = new TokenReader($lexer);
+// $parser->stmt();
 
 ?>

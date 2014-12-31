@@ -1,25 +1,12 @@
-Module main.
+@author {:Marcelo Camargo:}
+@date   {:2014/12/25:}
 
-Declare
-	entryPoint => {:main:}
-	date       => {:2014/12/27:}.
+$say <- "Hello World!"
 
-Const
-	hello  => {:Hello World!:}
-	size   => 90
-	font   => True.
+format:begin
+  field-origin [20, 10]
+  font-prop    [D, False, 90, 50]
+  field-data   [$say].
+format:end
 
-Import
-	^GB As graphic.box
-	^SN As label.serialize.
 
-Block helloWorld Where
-	field.origin(20,10)
-	font.config(D, font, size, 50)
-	field.data(hello):/
-
-Block main Where
-	label.begin
-		<Block:helloWorld>
-		<Module:footer>
-	label.end.
